@@ -72,6 +72,9 @@ class TrainParams:
 
 
 class MNISTParams(TrainParams):
+    """
+    Seperate parameters for MNIST dataset
+    """
     def __init__(self):
         super(MNISTParams, self).__init__()
         self.lr = 0.0001
@@ -84,6 +87,9 @@ class MNISTParams(TrainParams):
 
 
 class FMNISTParams(TrainParams):
+    """
+    Seperate parameters for FMNIST dataset
+    """
     def __init__(self):
         super(FMNISTParams, self).__init__()
         self.lr = 0.0001
@@ -96,6 +102,9 @@ class FMNISTParams(TrainParams):
 
 
 class CompositeLoss(nn.Module):
+    """
+    custom composite loss function 
+    """
     def __init__(self, device):
         super(CompositeLoss, self).__init__()
         pass
@@ -109,6 +118,10 @@ class CompositeLoss(nn.Module):
 
 
 class Encoder(nn.Module):
+    """
+    Takes image as input and outputs tensor of parameters
+    Shares weights with decoder
+    """
     def __init__(self, device):
         super(Encoder, self).__init__()
         self.weights1 = torch.Tensor(512,784).to(device)
@@ -143,6 +156,10 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
+    """
+    Takes encoder output and reconstructs image
+    Shares weights with encoder
+    """
     def __init__(self, device):
         super(Decoder, self).__init__()
         self.device = device
@@ -170,6 +187,9 @@ class Decoder(nn.Module):
 
 
 class Classifier(nn.Module):
+    """
+    Takes encoder output and classifies data
+    """
     def __init__(self, device):
         super(Classifier, self).__init__()
         self.fc = nn.Sequential(nn.Linear(150, 75),
@@ -224,6 +244,9 @@ def get_psnr(x, x_test):
 
 
 def eval(modules, data_loader, criteria, device):
+    """
+    evaluate on test data, no training occurs here
+    """
     modules.eval()
     encoder, decoder, classifier = modules
     criterion_rec, criterion_cls = criteria
